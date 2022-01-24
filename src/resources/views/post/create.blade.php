@@ -8,9 +8,9 @@
                 <p>{{$error}}</p>
             @endforeach
         @endif
-        <form class="col-12" action="/post" method="post">
+        <form class="col-12" action="/posts" method="post">
             @csrf
-            <input type="hidden" name="user_id" value="{{$user->id}}" >    
+            <input type="hidden" name="user_id" value="{{Auth::id()}}" >    
             <div class="mb-3 px-15 row justify-content-center flex-column">
                 <label class="form-label" for="titile">タイトル</label>
                 <input class="form-controll col-12" type="text" name="title" id="title" value="{{old('title')}}" >    

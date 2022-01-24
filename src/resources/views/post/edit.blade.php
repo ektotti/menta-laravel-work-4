@@ -8,7 +8,7 @@
                 <p>{{$error}}</p>
             @endforeach
         @endif
-        <form class="col-12" action="/post/{{$selectedPost->id}}" method="POST">
+        <form class="col-12" action="/posts/{{$selectedPost->id}}" method="POST">
             @method('PATCH')
             @csrf
             <div class="mb-3 px-15 row justify-content-center flex-column">

@@ -10,15 +10,15 @@
                     <h2>{{$post->title}}</h2>
                     <p>{{$post->content}}</p>
                 </div>
-                @if(isset($user) && $user->id == $post->user_id)
+                @if(Auth::check() && Auth::id() == $post->user_id)
                 <div class="card-header text-center">
                     <div class="d-flex justify-content-center align-items-center">
                         <span class="mr-2">投稿者 : {{$post->user->name}}</span>
-                        <form class="mr-2" action="/post/{{$post->id}}/edit" method="GET">
+                        <form class="mr-2" action="/posts/{{$post->id}}/edit" method="GET">
                             @csrf
                             <input class="btn btn-primary" type="submit" value="編集する">
                         </form>
-                        <form action="/post/{{$post->id}}" method="POST">
+                        <form action="/posts/{{$post->id}}" method="POST">
                             @csrf
                             @method('DELETE')
                             <input class="btn btn-danger" type="submit" value="削除する">

@@ -39,10 +39,10 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/post">みんなの投稿</a>
+                            <a class="nav-link" href="/posts">みんなの投稿</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/post/create">投稿を作成</a>
+                            <a class="nav-link" href="/posts/create">投稿を作成</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest

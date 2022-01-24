@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -15,9 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
         $posts = Post::with('user')->get();
-        return view('post.index', ['posts'=>$posts, 'user'=>$user]);
+        return view('post.index', compact('posts'));
     }
 
     /**
@@ -27,12 +27,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        if(Auth::check()) {
-            $user = Auth::user();
-            return view('post.create', ['user' => $user]);
-        }else{
-            return redirect('/login');
-        }
+        Auth::check();
+        return view('post.create');
     }
 
     /**
@@ -41,21 +37,15 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        if(Auth::check()) {
-            $this->validate($request, Post::$rules);
-            $post = new Post;
-            $form = $request->all();
-            unset($form['_token']);
-            $post->fill($form)->save();
+        $post = new Post;
+        $form = $request->all();
+        unset($form['_token']);
+        $post->fill($form)->save();
 
-            return redirect('/post');
-        }else{
-
-            return redirect('/login');
-
-        }
+        return redirect('/posts');
+    
     }
 
     /**
@@ -78,7 +68,7 @@ class PostController extends Controller
     public function edit($id)
     {
         $selectedPost = Post::find($id);
-        return view('post.edit', ['selectedPost' => $selectedPost]);
+        return view('post.edit', compact('selectedPost'));
     }
 
     /**
@@ -88,15 +78,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostRequest $request, $id)
     {
-        $this->validate($request, Post::$rules);
         $editedpost = Post::find($id);
         $form = $request->all();
         unset($form['_token']);
         $editedpost->fill($form)->save();
         
-        return redirect('/post');
+        return redirect('/posts');
     }
 
     /**
@@ -110,6 +99,6 @@ class PostController extends Controller
         $selectedPost = Post::find($id);
         $selectedPost->delete();
 
-        return redirect('/post');
+        return redirect('/posts');
     }
 }
