@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->with('usersFavoriteThis')->get();
+        $posts = Post::with(['likesThis', 'user'])->get();
         return view('post.index', compact('posts'));
     }
 
@@ -66,9 +66,9 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {   
-            $selectedPost = Post::find($id);
-            return view('post.edit', compact('selectedPost'));
+    {
+        $selectedPost = Post::find($id);
+        return view('post.edit', compact('selectedPost'));
     }
 
     /**
@@ -80,36 +80,12 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        /**
-         * 中間テーブルへのレコード挿入をここに記載したので、
-         * 投稿自体の更新処理と分ける目的で、アクセス元のパスを使って条件分岐
-         */
-        $previousPath = parse_url($_SERVER['HTTP_REFERER'],PHP_URL_PATH);
-
-        if(str_contains($previousPath, 'edit')) {
-            
             $editedpost = Post::find($id);
             $form = $request->all();
             unset($form['_token']);
             $editedpost->fill($form)->save();
             
             return redirect('/posts');
-        
-        } else {
-
-            $editedPost = Post::find($id);
-            $userId = Auth::id();
-            
-            if(isset($request->addFavorite)) {
-                $editedPost->usersFavoriteThis()->attach($userId);
-            } elseif(isset($request->removeFavorite)) {
-                $editedPost->usersFavoriteThis()->detach($userId);
-            }
-            
-            return redirect('/posts');
-
-        }
-
     }
 
     /**
