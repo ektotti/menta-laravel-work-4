@@ -44,6 +44,7 @@
                             @else
                                 <span>投稿者 : {{$post->user->name}}</span>
                                 <i class="far fa-heart"></i>
+                                <span>{{$post->countLikesAmount()}}</span>
                             @endif
                         </div>
                     </div>
