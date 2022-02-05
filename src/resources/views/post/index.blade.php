@@ -34,9 +34,13 @@
                                         {{-- ログイン中ユーザーがその投稿に対して"いいね"しているか確認
                                             中間テーブルにレコードが存在するか確認している。 --}}
                                         @if($post->judgeHavingThisUser(AUTH::id()))
-                                        <a href="/likes/delete?post_id={{$post->id}}&user_id={{Auth::id()}}"><i class="fa fa-heart"></i></a>
+                                        <form action="/likes/{{$post->id}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="submit" class="fa border-0 bg-transparent" value="&#xf004;">
+                                        </form>
                                         @else
-                                        <a href="/likes/add?post_id={{$post->id}}&user_id={{Auth::id()}}"><i class="far fa-heart"></i></a>
+                                        <a class="text-dark" href="/likes/add?post_id={{$post->id}}&user_id={{Auth::id()}}"><i class="far fa-heart"></i></a>
                                         @endif
                                         <span>{{$post->countLikesAmount()}}</span>
                                     </form>

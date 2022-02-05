@@ -22,4 +22,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('posts','PostController', ['only' => ['index', 'create', 'store', 'edit', 'update', 'destroy']]);
 
 Route::get('likes/add', 'LikesController@add');
-Route::get('likes/delete', 'LikesController@delete');
+Route::delete('/likes/{id}', 'LikesController@delete');
