@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->get();
+        $posts = Post::with(['likesThis', 'user'])->get();
         return view('post.index', compact('posts'));
     }
 
@@ -80,12 +80,12 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $editedpost = Post::find($id);
-        $form = $request->all();
-        unset($form['_token']);
-        $editedpost->fill($form)->save();
-        
-        return redirect('/posts');
+            $editedpost = Post::find($id);
+            $form = $request->all();
+            unset($form['_token']);
+            $editedpost->fill($form)->save();
+            
+            return redirect('/posts');
     }
 
     /**
